@@ -1,4 +1,4 @@
-package com.cib.qa.pages;
+package com.way2automation.qa.pages;
 
 import com.paulhammant.ngwebdriver.NgWebDriver;
 import org.apache.commons.lang3.StringUtils;

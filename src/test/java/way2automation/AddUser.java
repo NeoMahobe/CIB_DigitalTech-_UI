@@ -1,8 +1,8 @@
-package cib_digital_tech;
+package way2automation;
 
-import com.cib.qa.base.TestBase;
-import com.cib.qa.pages.WebTablesPage;
-import com.cib.qa.utilities.TestUtil;
+import com.way2automation.qa.base.TestBase;
+import com.way2automation.qa.pages.WebTablesPage;
+import com.way2automation.qa.utilities.TestUtil;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.*;
@@ -16,20 +16,24 @@ public class AddUser extends TestBase {
     @BeforeMethod
     @Parameters({"environment"})
     public void setUp(@Optional String env) throws Exception {
-        initialization(env);
+        Initialization(env);
     }
 
     @Test
     public void AddUserDetails() throws Exception {
 
-        driver = getWebDriver();
+        driver = GetWebDriver();
         testUtil = new TestUtil();
         webTablesPage = new WebTablesPage(driver);
 
         webTablesPage
                 .NavigateToWebTables()
                 .ClickAddUserButton()
-                .AddUserDetails();
+                .AddUserDetails()
+                .ClickSaveButton();
+
+        testUtil
+                .InsertDataIntoExcel();
     }
 
     @AfterMethod

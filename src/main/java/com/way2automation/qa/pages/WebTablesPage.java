@@ -1,12 +1,22 @@
-package com.cib.qa.pages;
+package com.way2automation.qa.pages;
 
 
-import com.cib.qa.base.TestBase;
+import com.github.javafaker.service.FakeValuesService;
+import com.github.javafaker.service.RandomService;
+import com.way2automation.qa.base.TestBase;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import static org.junit.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 public class WebTablesPage extends Page {
 
@@ -58,10 +68,21 @@ public class WebTablesPage extends Page {
         this.ngSendKeys(passwordInputBox,"Test 4");
         this.clickRadio(customer);
         this.ngSelectbyIndex(roleId,2);
-        this.ngSendKeys(emailInputBox,"Test5@yahoo");
+        this.ngSendKeys(emailInputBox,"Test5@yahoo.com");
         this.ngSendKeys(mobilePhoneInputBox,"Test 6");
+        return this;
+    }
+
+    public WebTablesPage ClickSaveButton() throws InterruptedException {
         this.ngClick(saveButton);
         return this;
     }
 
+    public void CreateUsername () {
+
+        List listofelements = getDriver().findElements(By.xpath("//table[@class ='smart-table table table-striped']//tbody//tr//td"));
+        String value = listofelements.toString();
+        System.out.println(value);
+
+    }
 }

@@ -1,4 +1,4 @@
-package com.cib.qa.extentreportlistener;
+package com.way2automation.qa.extentreportlistener;
 
 import java.io.File;
 import java.util.Calendar;
