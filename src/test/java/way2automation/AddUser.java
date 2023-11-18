@@ -31,9 +31,6 @@ public class AddUser extends TestBase {
                 .ClickAddUserButton()
                 .AddUserDetails()
                 .ClickSaveButton();
-
-        testUtil
-                .InsertDataIntoExcel();
     }
 
     @AfterMethod

@@ -1,22 +1,16 @@
 package com.way2automation.qa.pages;
 
 
-import com.github.javafaker.service.FakeValuesService;
-import com.github.javafaker.service.RandomService;
+import com.github.javafaker.Faker;
 import com.way2automation.qa.base.TestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
 public class WebTablesPage extends Page {
 
@@ -62,13 +56,14 @@ public class WebTablesPage extends Page {
     }
 
     public WebTablesPage AddUserDetails() throws InterruptedException {
-        this.ngSendKeys(firstNameInputBox,"Test 1");
-        this.ngSendKeys(lastNameInputBox,"Test 2");
+        Faker faker = new Faker();
+        this.ngSendKeys(firstNameInputBox,faker.name().firstName());
+        this.ngSendKeys(lastNameInputBox,faker.name().lastName());
         this.ngSendKeys(userNameInputBox,"Test 3");
         this.ngSendKeys(passwordInputBox,"Test 4");
         this.clickRadio(customer);
         this.ngSelectbyIndex(roleId,2);
-        this.ngSendKeys(emailInputBox,"Test5@yahoo.com");
+        this.ngSendKeys(emailInputBox,faker.internet().emailAddress());
         this.ngSendKeys(mobilePhoneInputBox,"Test 6");
         return this;
     }
