@@ -77,7 +77,7 @@ public class Page {
                 });
     }
 
-    public void ExSendKeys(WebElement element, String text) throws InterruptedException, IOException {
+    public void ExcelSendKeys(WebElement element, String text) throws IOException {
         TestUtil testUtil = new TestUtil();
         String value = testUtil.SelectDataFromExcel(text);
         SendKeys(element, value);

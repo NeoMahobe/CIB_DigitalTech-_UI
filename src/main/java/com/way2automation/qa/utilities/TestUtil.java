@@ -32,15 +32,7 @@ public class TestUtil extends TestBase {
         String currentDir = System.getProperty("user.dir");
         SimpleDateFormat sdf = new SimpleDateFormat("HH_mma");
         Date resultdate = new Date(System.currentTimeMillis());
-        FileUtils.copyFile(scrFile, new File(currentDir + "/screenshots/" + testName + "_" + sdf.format(resultdate) + ".png"));
-    }
-
-    public void InsertDataIntoExcel() throws FilloException {
-        Fillo fillo = new Fillo();
-        Connection connection = fillo.getConnection(System.getProperty("user.dir") + path);
-        String strQuery = "INSERT INTO UserDetails(Name,Country) VALUES('Neo','USA')";
-        connection.executeUpdate(strQuery);
-        connection.close();
+        FileUtils.copyFile(scrFile, new File(currentDir + "/screenshots/" + testName+ "TestClass" + "_" + sdf.format(resultdate) + ".png"));
     }
 
     //This method is used to get cell values using Apache POI Api library

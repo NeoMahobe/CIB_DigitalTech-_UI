@@ -54,15 +54,15 @@ public class WebTablesPage extends Page {
         return this;
     }
 
-    public WebTablesPage AddUserDetails() throws InterruptedException, IOException, FilloException {
-        this.ExSendKeys(firstNameInputBox, "firstName");
-        this.ExSendKeys(lastNameInputBox,"lastName");
-        this.ExSendKeys(userNameInputBox,"userName");
-        this.ExSendKeys(passwordInputBox,"password");
+    public WebTablesPage AddUserDetails(int selection) throws InterruptedException, IOException, FilloException {
+        this.ExcelSendKeys(firstNameInputBox, "firstName");
+        this.ExcelSendKeys(lastNameInputBox,"lastName");
+        this.ExcelSendKeys(userNameInputBox,"userName");
+        this.ExcelSendKeys(passwordInputBox,"password");
         this.ClickRadioButton(customer);
-        this.SelectByIndex(roleId,2);
-        this.ExSendKeys(emailInputBox,"email");
-        this.ExSendKeys(mobilePhoneInputBox,"mobileNumber");
+        this.SelectByIndex(roleId,selection);
+        this.ExcelSendKeys(emailInputBox,"email");
+        this.ExcelSendKeys(mobilePhoneInputBox,"mobileNumber");
         return this;
     }
 

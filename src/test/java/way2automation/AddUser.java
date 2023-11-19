@@ -11,14 +11,12 @@ public class AddUser extends TestBase {
 
     private WebDriver driver;
     private WebTablesPage webTablesPage;
-    private TestUtil testUtil;
+    private TestUtil testUtil = null;
 
     @BeforeMethod
     @Parameters({"environment"})
     public void setUp(@Optional String env) throws Exception {
         Initialization(env);
-        //testUtil
-               // .CreateTestData();
     }
 
     @Test
@@ -34,7 +32,7 @@ public class AddUser extends TestBase {
         webTablesPage
                 .NavigateToWebTables()
                 .ClickAddUserButton()
-                .AddUserDetails()
+                .AddUserDetails(2)
                 .ClickSaveButton();
     }
 
