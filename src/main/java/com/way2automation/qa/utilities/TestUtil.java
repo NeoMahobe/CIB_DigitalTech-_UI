@@ -7,15 +7,22 @@ import com.codoid.products.fillo.Recordset;
 import com.github.javafaker.Faker;
 import com.way2automation.qa.base.TestBase;
 import org.apache.commons.io.FileUtils;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 
 
 public class TestUtil extends TestBase {
@@ -38,21 +45,39 @@ public class TestUtil extends TestBase {
         connection.close();
     }
 
-    public void SelectDataFromExcel() throws FilloException {
-        Fillo fillo = new Fillo();
-        Connection connection = fillo.getConnection(System.getProperty("user.dir") + path);
-        String strQuery = "Select * from UserDetails where ID=100 and name='John'";
-        Recordset recordset = connection.executeQuery(strQuery);
+    //This method is used to get cell values using Apache POI Api library
+    public String SelectDataFromExcel(String fieldName) throws IOException {
+        String cellValue = null;
+        FileInputStream file = new FileInputStream(System.getProperty("user.dir") + path);
+        XSSFWorkbook wb = new XSSFWorkbook(file);
+        XSSFSheet ws = wb.getSheet("UserDetails");
+        Row firstRow = ws.getRow(0);
+        Iterator<Cell> cellIterator = firstRow.cellIterator();
 
-        while (recordset.next()) {
-            System.out.println(recordset.getField("Details"));
+        while (cellIterator.hasNext()) {
+            int firstCellNum = firstRow.getFirstCellNum();
+            int lastCellNum = firstRow.getLastCellNum();
+            for (int i = firstCellNum; i < lastCellNum; i++) {
+                Cell cell = firstRow.getCell(i);
+                switch (cell.getCellType()) {
+                    case STRING:
+                        if (fieldName != null && fieldName.equalsIgnoreCase(cell.getStringCellValue())) {
+                            System.out.println("Found the target value: " + fieldName);
+                            cellValue = ws.getRow(1).getCell(i).getStringCellValue();
+                            System.out.println(cellValue);
+                            break;
+                        }
+                        break;
+                }
+            }
+            break;
         }
-
-        recordset.close();
-        connection.close();
+        file.close();
+        return cellValue;
     }
 
-    public static void UpdateDataInExcel(String columnName, String field) throws FilloException {
+    //This method is used to insert cell values using Fillo (Excel API for Java)
+    public void UpdateDataInExcel(String columnName, String field) throws FilloException {
         Fillo fillo = new Fillo();
         Connection connection = fillo.getConnection(System.getProperty("user.dir") + "/src/main/resources/TestData/TestData.xlsx");
         String strQuery = "Update UserDetails Set " + columnName + "='" + field + "'";

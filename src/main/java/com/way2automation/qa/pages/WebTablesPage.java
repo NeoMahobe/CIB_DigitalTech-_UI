@@ -1,13 +1,14 @@
 package com.way2automation.qa.pages;
 
 
-import com.github.javafaker.Faker;
+import com.codoid.products.exception.FilloException;
 import com.way2automation.qa.base.TestBase;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -53,16 +54,15 @@ public class WebTablesPage extends Page {
         return this;
     }
 
-    public WebTablesPage AddUserDetails() throws InterruptedException {
-        Faker faker = new Faker();
-        this.ngSendKeys(firstNameInputBox,faker.name().firstName());
-        this.ngSendKeys(lastNameInputBox,faker.name().lastName());
-        this.ngSendKeys(userNameInputBox,"Test 3");
-        this.ngSendKeys(passwordInputBox,"Test 4");
+    public WebTablesPage AddUserDetails() throws InterruptedException, IOException, FilloException {
+        this.exSendKeys(firstNameInputBox, "firstName");
+        this.exSendKeys(lastNameInputBox,"lastName");
+        this.exSendKeys(userNameInputBox,"userName");
+        this.exSendKeys(passwordInputBox,"password");
         this.clickRadio(customer);
         this.ngSelectbyIndex(roleId,2);
-        this.ngSendKeys(emailInputBox,faker.internet().emailAddress());
-        this.ngSendKeys(mobilePhoneInputBox,"Test 6");
+        this.exSendKeys(emailInputBox,"email");
+        this.exSendKeys(mobilePhoneInputBox,"mobileNumber");
         return this;
     }
 

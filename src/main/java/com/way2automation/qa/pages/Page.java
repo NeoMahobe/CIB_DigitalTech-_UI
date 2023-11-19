@@ -1,6 +1,8 @@
 package com.way2automation.qa.pages;
 
+import com.codoid.products.exception.FilloException;
 import com.paulhammant.ngwebdriver.NgWebDriver;
+import com.way2automation.qa.utilities.TestUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.*;
@@ -134,6 +136,13 @@ public class Page {
     public void ngSendKeys(WebElement element, String text) throws InterruptedException {
         new NgWebDriver((JavascriptExecutor) driver).waitForAngularRequestsToFinish();
         sendKeyz(element, text);
+    }
+
+    public void exSendKeys(WebElement element, String text) throws InterruptedException, FilloException, IOException {
+        TestUtil testUtil = new TestUtil();
+        new NgWebDriver((JavascriptExecutor) driver).waitForAngularRequestsToFinish();
+        String value = testUtil.SelectDataFromExcel(text);
+        sendKeyz(element, value);
     }
 
     public void clickRadio(WebElement element) throws InterruptedException {

@@ -17,8 +17,8 @@ public class AddUser extends TestBase {
     @Parameters({"environment"})
     public void setUp(@Optional String env) throws Exception {
         Initialization(env);
-        testUtil
-                .CreateTestData();
+        //testUtil
+               // .CreateTestData();
     }
 
     @Test
@@ -27,6 +27,9 @@ public class AddUser extends TestBase {
         driver = GetWebDriver();
         testUtil = new TestUtil();
         webTablesPage = new WebTablesPage(driver);
+
+        testUtil
+                .CreateTestData();
 
         webTablesPage
                 .NavigateToWebTables()
