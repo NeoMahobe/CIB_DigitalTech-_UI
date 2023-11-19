@@ -36,8 +36,6 @@ public class WebTablesPage extends Page {
     @FindBy(xpath = "//button[@class = 'btn btn-success'][not(@disabled= 'disabled')]")
     WebElement saveButton;
 
-    private WebDriver driver;
-
     //Initializing the Page Object
     public WebTablesPage(WebDriver driver) {
         super(driver);
