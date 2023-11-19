@@ -3,7 +3,6 @@ package com.way2automation.qa.utilities;
 import com.codoid.products.exception.FilloException;
 import com.codoid.products.fillo.Connection;
 import com.codoid.products.fillo.Fillo;
-import com.codoid.products.fillo.Recordset;
 import com.github.javafaker.Faker;
 import com.way2automation.qa.base.TestBase;
 import org.apache.commons.io.FileUtils;
@@ -17,7 +16,6 @@ import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,9 +60,7 @@ public class TestUtil extends TestBase {
                 switch (cell.getCellType()) {
                     case STRING:
                         if (fieldName != null && fieldName.equalsIgnoreCase(cell.getStringCellValue())) {
-                            System.out.println("Found the target value: " + fieldName);
                             cellValue = ws.getRow(1).getCell(i).getStringCellValue();
-                            System.out.println(cellValue);
                             break;
                         }
                         break;
@@ -101,7 +97,6 @@ public class TestUtil extends TestBase {
         testData.put("mobileNumber", faker.phoneNumber().cellPhone());
 
         for (String key : testData.keySet()) {
-            System.out.println(key);
             String value = testData.get(key);
             UpdateDataInExcel(key, value);
         }

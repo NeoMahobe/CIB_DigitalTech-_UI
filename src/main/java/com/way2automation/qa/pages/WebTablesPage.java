@@ -50,24 +50,24 @@ public class WebTablesPage extends Page {
     }
 
     public WebTablesPage ClickAddUserButton() throws Exception {
-        this.ngClick(addButton);
+        this.Click(addButton);
         return this;
     }
 
     public WebTablesPage AddUserDetails() throws InterruptedException, IOException, FilloException {
-        this.exSendKeys(firstNameInputBox, "firstName");
-        this.exSendKeys(lastNameInputBox,"lastName");
-        this.exSendKeys(userNameInputBox,"userName");
-        this.exSendKeys(passwordInputBox,"password");
-        this.clickRadio(customer);
-        this.ngSelectbyIndex(roleId,2);
-        this.exSendKeys(emailInputBox,"email");
-        this.exSendKeys(mobilePhoneInputBox,"mobileNumber");
+        this.ExSendKeys(firstNameInputBox, "firstName");
+        this.ExSendKeys(lastNameInputBox,"lastName");
+        this.ExSendKeys(userNameInputBox,"userName");
+        this.ExSendKeys(passwordInputBox,"password");
+        this.ClickRadioButton(customer);
+        this.SelectByIndex(roleId,2);
+        this.ExSendKeys(emailInputBox,"email");
+        this.ExSendKeys(mobilePhoneInputBox,"mobileNumber");
         return this;
     }
 
     public WebTablesPage ClickSaveButton() throws InterruptedException {
-        this.ngClick(saveButton);
+        this.Click(saveButton);
         return this;
     }
 
