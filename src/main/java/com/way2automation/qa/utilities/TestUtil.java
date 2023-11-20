@@ -69,34 +69,12 @@ public class TestUtil extends TestBase {
     }
 
     //This method is used to insert cell values using Fillo (Excel API for Java)
-    public void UpdateDataInExcel(String columnName, String field,String value) throws FilloException {
+    public void UpdateDataInExcel(String columnName, String field, String value, String idColumn) throws FilloException {
         Fillo fillo = new Fillo();
         Connection connection = fillo.getConnection(System.getProperty("user.dir") + "/src/main/resources/TestData/TestData.xlsx");
-        String strQuery = "Update UserDetails Set " + columnName + "='" + field + "' where "+columnName+"='"+value+"'";
-        System.out.println(strQuery);
+        String strQuery = "Update UserDetails Set " + columnName + "='" + field + "' where " + idColumn + "='" + value + "'";
         connection.executeUpdate(strQuery);
         connection.close();
     }
-
-//    public void CreateTestData() throws FilloException {
-//        Faker faker = new Faker();
-//        String firstName = faker.name().firstName();
-//        String lastName = faker.name().lastName();
-//        String randomNumber = faker.number().digits(10);
-//
-//        HashMap<String, String> testData = new HashMap<>();
-//
-////        testData.put("firstName", firstName);
-////        testData.put("lastName", lastName);
-//        testData.put("UserName", randomNumber);
-//
-//        for (int i = 0; i < testData.keySet().size(); i++) {
-//            String key = String.valueOf(testData.keySet());
-//            String result = key.replaceAll("\\[|\\]", "");
-//            String value = testData.get(result);
-//            UpdateDataInExcel(result, value);
-//        }
-//
-//    }
 
 }

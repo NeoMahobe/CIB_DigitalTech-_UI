@@ -5,13 +5,10 @@ import com.codoid.products.exception.FilloException;
 import com.github.javafaker.Faker;
 import com.way2automation.qa.base.TestBase;
 import com.way2automation.qa.utilities.TestUtil;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 
 import java.io.IOException;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -28,10 +25,6 @@ public class WebTablesPage extends Page {
     WebElement userNameInputBox;
     @FindBy(xpath = "//input[@name = 'Password']")
     WebElement passwordInputBox;
-    @FindBy(xpath = "//label[text() = 'Company AAA']")
-    WebElement customer;
-    @FindBy(xpath = "//select[@name = 'RoleId']//option")
-    WebElement roleId;
     @FindBy(xpath = "//input[@name = 'Email']")
     WebElement emailInputBox;
     @FindBy(xpath = "//input[@name = 'Mobilephone']")
@@ -45,6 +38,7 @@ public class WebTablesPage extends Page {
     private String userName;
     private String customerRadioButton;
     private String randomUserName;
+    private String stringValue;
 
     //Initializing the Page Object
     public WebTablesPage(WebDriver driver) {
@@ -63,22 +57,33 @@ public class WebTablesPage extends Page {
         return this;
     }
 
-    public WebTablesPage AddSingleUser(int selection) throws IOException, FilloException, InterruptedException {
-        TestUtil testUtil = new TestUtil();
+    public WebTablesPage GetUserDetails(int selection) throws IOException, FilloException, InterruptedException {
+        stringValue = String.valueOf(selection);
         Faker faker = new Faker();
-
+        TestUtil testUtil = new TestUtil();
         this.randomUserName = faker.number().digits(10);
         this.userRole = testUtil.SelectDataFromExcel("Role", selection);
-
         this.customerRadioButton = testUtil.SelectDataFromExcel("Customer", selection);
+        testUtil.UpdateDataInExcel("UserName", randomUserName, stringValue, "ID");
         this.userName = testUtil.SelectDataFromExcel("UserName", selection);
 
-
-        testUtil.UpdateDataInExcel("UserName", randomUserName, userName);
         WebElement roleId = this.getDriver().findElement(By.xpath("//select[@name = 'RoleId']//option[text() ='" + userRole + "']"));
         WebElement customerOption = this.getDriver().findElement(By.xpath("//label[text() = '" + customerRadioButton + "']"));
 
+        CaptureUserDetails(selection, roleId, customerOption);
+        return this;
+    }
 
+    public WebTablesPage CaptureMultipleUserDetails(int count) throws Exception {
+        for (int i = 1; i <= count; i++) {
+            GetUserDetails(i);
+            ClickSaveButton();
+            ClickAddUserButton();
+        }
+        return this;
+    }
+
+    public void CaptureUserDetails(int selection, WebElement roleId, WebElement customerOption) throws IOException {
         this.ExcelSendKeys(firstNameInputBox, "FirstName", selection);
         this.ExcelSendKeys(lastNameInputBox, "LastName", selection);
         this.ExcelSendKeys(userNameInputBox, "UserName", selection);
@@ -87,16 +92,6 @@ public class WebTablesPage extends Page {
         this.Click(roleId);
         this.ExcelSendKeys(emailInputBox, "Email", selection);
         this.ExcelSendKeys(mobilePhoneInputBox, "Cell", selection);
-        return this;
-    }
-
-    public WebTablesPage AddMultipleUsers(int count) throws Exception {
-        for (int i = 1; i <= count; i++) {
-            AddSingleUser(i);
-            ClickSaveButton();
-            ClickAddUserButton();
-        }
-        return this;
     }
 
     public WebTablesPage ClickSaveButton() throws InterruptedException {
@@ -109,11 +104,18 @@ public class WebTablesPage extends Page {
         return this;
     }
 
-    public void VerifyEntriesInTable() {
-
-        List listofelements = getDriver().findElements(By.xpath("//table[@class ='smart-table table table-striped']//tbody//tr//td"));
+    public void VerifyEntriesInTable(int records) throws IOException {
         TestUtil testUtil = new TestUtil();
-        //this.userName = testUtil.SelectDataFromExcel("UserName",selection);
+        WebElement element = null;
 
+        for (int i = 1; i <= records; i++) {
+            this.userName = testUtil.SelectDataFromExcel("UserName", i);
+            try{
+                 element = getDriver().findElement(By.xpath("//table[@class ='smart-table table table-striped']//td[text()='" + userName + "']/.."));
+            }catch (WebDriverException  | NullPointerException e){
+                this.IsDisplayed(element);
+            }
+            this.IsDisplayed(element);
+        }
     }
 }

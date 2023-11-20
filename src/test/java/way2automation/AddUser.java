@@ -20,7 +20,7 @@ public class AddUser extends TestBase {
     }
 
     @Test
-    public void AddUserDetails() throws Exception {
+    public void AddMultipleUsers() throws Exception {
 
         driver = GetWebDriver();
         testUtil = new TestUtil();
@@ -29,9 +29,9 @@ public class AddUser extends TestBase {
         webTablesPage
                 .NavigateToWebTables()
                 .ClickAddUserButton()
-                .AddMultipleUsers(2)
+                .CaptureMultipleUserDetails(2)
                 .ClickCloseButton()
-                .VerifyEntriesInTable();
+                .VerifyEntriesInTable(2);
     }
 
     @AfterMethod

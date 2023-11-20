@@ -37,7 +37,7 @@ public class Page {
     }
 
     public void SendKeys(WebElement element, String text) {
-        Wait <WebDriver> wait = new FluentWait(driver)
+        Wait<WebDriver> wait = new FluentWait(driver)
                 .withTimeout(Duration.ofSeconds(timeout))
                 .pollingEvery(Duration.ofSeconds(polling))
                 .ignoring(WebDriverException.class);
@@ -52,7 +52,7 @@ public class Page {
     }
 
     public void ClickRadioButton(WebElement element) {
-        Wait <WebDriver> wait = new FluentWait(driver)
+        Wait<WebDriver> wait = new FluentWait(driver)
                 .withTimeout(Duration.ofSeconds(timeout))
                 .pollingEvery(Duration.ofSeconds(polling))
                 .ignoring(WebDriverException.class);
@@ -65,7 +65,7 @@ public class Page {
     }
 
     public void Click(WebElement element) {
-        Wait <WebDriver> wait = new FluentWait(driver)
+        Wait<WebDriver> wait = new FluentWait(driver)
                 .withTimeout(Duration.ofSeconds(timeout))
                 .pollingEvery(Duration.ofSeconds(polling))
                 .ignoring(WebDriverException.class);
@@ -79,23 +79,26 @@ public class Page {
 
     public void ExcelSendKeys(WebElement element, String text, int value) throws IOException {
         TestUtil testUtil = new TestUtil();
-        String cellvalue = testUtil.SelectDataFromExcel(text,value);
+        String cellvalue = testUtil.SelectDataFromExcel(text, value);
         SendKeys(element, cellvalue);
     }
 
-    public void SelectByText(WebElement element, String text)  {
+    public void IsDisplayed(WebElement element) {
 
-        Wait <WebDriver> wait = new FluentWait(driver)
+        Wait<WebDriver> wait = new FluentWait(driver)
                 .withTimeout(Duration.ofSeconds(timeout))
                 .pollingEvery(Duration.ofSeconds(polling))
                 .ignoring(WebDriverException.class);
 
-        wait.until(
-                d -> {
-                    Select dropdown = new Select(element);
-                    dropdown.selectByVisibleText(text);
-                    return true;
-                });
+        try {
+            wait.until(
+                    d -> {
+                        element.isDisplayed();
+                        return true;
+                    });
+        }catch (NullPointerException e){
+            Assert.fail("Element is not displayed as expected!");
+        }
     }
 
 }
