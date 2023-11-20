@@ -38,6 +38,8 @@ public class WebTablesPage extends Page {
     WebElement mobilePhoneInputBox;
     @FindBy(xpath = "//button[@class = 'btn btn-success'][not(@disabled= 'disabled')]")
     WebElement saveButton;
+    @FindBy(xpath = "//button[@class = 'btn btn-danger'][not(@disabled= 'disabled')]")
+    WebElement closeButton;
 
     private String userRole;
     private String userName;
@@ -61,30 +63,39 @@ public class WebTablesPage extends Page {
         return this;
     }
 
-    public WebTablesPage AddUserDetails(int selection) throws IOException, FilloException {
+    public WebTablesPage AddSingleUser(int selection) throws IOException, FilloException, InterruptedException {
         TestUtil testUtil = new TestUtil();
         Faker faker = new Faker();
 
         this.randomUserName = faker.number().digits(10);
-        this.userRole = testUtil.SelectDataFromExcel("Role",selection);
-        this.customerRadioButton = testUtil.SelectDataFromExcel("Customer",selection);
-        this.userName = testUtil.SelectDataFromExcel("UserName",selection);
+        this.userRole = testUtil.SelectDataFromExcel("Role", selection);
+
+        this.customerRadioButton = testUtil.SelectDataFromExcel("Customer", selection);
+        this.userName = testUtil.SelectDataFromExcel("UserName", selection);
 
 
-        testUtil.UpdateDataInExcel("UserName",randomUserName,userName);
-        WebElement roleId = this.getDriver().findElement(By.xpath("//select[@name = 'RoleId']//option[text() ='"+userRole+"']"));
-        WebElement customerOption = this.getDriver().findElement(By.xpath("//label[text() = '"+customerRadioButton+"']"));
+        testUtil.UpdateDataInExcel("UserName", randomUserName, userName);
+        WebElement roleId = this.getDriver().findElement(By.xpath("//select[@name = 'RoleId']//option[text() ='" + userRole + "']"));
+        WebElement customerOption = this.getDriver().findElement(By.xpath("//label[text() = '" + customerRadioButton + "']"));
 
 
-        this.ExcelSendKeys(firstNameInputBox, "FirstName",selection);
-        this.ExcelSendKeys(lastNameInputBox,"LastName",selection);
-        this.ExcelSendKeys(userNameInputBox,"UserName",selection);
-        this.ExcelSendKeys(passwordInputBox,"Password",selection);
-        //Needs to take in a string value for each radio button option
+        this.ExcelSendKeys(firstNameInputBox, "FirstName", selection);
+        this.ExcelSendKeys(lastNameInputBox, "LastName", selection);
+        this.ExcelSendKeys(userNameInputBox, "UserName", selection);
+        this.ExcelSendKeys(passwordInputBox, "Password", selection);
         this.ClickRadioButton(customerOption);
         this.Click(roleId);
-        this.ExcelSendKeys(emailInputBox,"Email",selection);
-        this.ExcelSendKeys(mobilePhoneInputBox,"Cell",selection);
+        this.ExcelSendKeys(emailInputBox, "Email", selection);
+        this.ExcelSendKeys(mobilePhoneInputBox, "Cell", selection);
+        return this;
+    }
+
+    public WebTablesPage AddMultipleUsers(int count) throws Exception {
+        for (int i = 1; i <= count; i++) {
+            AddSingleUser(i);
+            ClickSaveButton();
+            ClickAddUserButton();
+        }
         return this;
     }
 
@@ -93,11 +104,16 @@ public class WebTablesPage extends Page {
         return this;
     }
 
-    public void CreateUsername () {
+    public WebTablesPage ClickCloseButton() throws InterruptedException {
+        this.Click(closeButton);
+        return this;
+    }
+
+    public void VerifyEntriesInTable() {
 
         List listofelements = getDriver().findElements(By.xpath("//table[@class ='smart-table table table-striped']//tbody//tr//td"));
-        String value = listofelements.toString();
-        System.out.println(value);
+        TestUtil testUtil = new TestUtil();
+        //this.userName = testUtil.SelectDataFromExcel("UserName",selection);
 
     }
 }

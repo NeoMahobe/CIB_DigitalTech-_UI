@@ -26,17 +26,12 @@ public class AddUser extends TestBase {
         testUtil = new TestUtil();
         webTablesPage = new WebTablesPage(driver);
 
-        //testUtil
-                //.CreateTestData();
-
         webTablesPage
                 .NavigateToWebTables()
                 .ClickAddUserButton()
-                .AddUserDetails(1)
-                .ClickSaveButton()
-                .ClickAddUserButton()
-                .AddUserDetails(2)
-                .ClickSaveButton();
+                .AddMultipleUsers(2)
+                .ClickCloseButton()
+                .VerifyEntriesInTable();
     }
 
     @AfterMethod

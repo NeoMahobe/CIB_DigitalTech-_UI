@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="CIB_DigitalTech_UIAutomation" />
+        <module name="CIB_DigitalTech-_UI" />
       </profile>
     </annotationProcessing>
   </component>
