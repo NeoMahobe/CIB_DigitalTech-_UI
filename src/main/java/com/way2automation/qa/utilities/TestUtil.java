@@ -7,6 +7,7 @@ import com.github.javafaker.Faker;
 import com.way2automation.qa.base.TestBase;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -21,6 +22,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 
 
 public class TestUtil extends TestBase {
@@ -32,11 +34,11 @@ public class TestUtil extends TestBase {
         String currentDir = System.getProperty("user.dir");
         SimpleDateFormat sdf = new SimpleDateFormat("HH_mma");
         Date resultdate = new Date(System.currentTimeMillis());
-        FileUtils.copyFile(scrFile, new File(currentDir + "/screenshots/" + testName+ "TestClass" + "_" + sdf.format(resultdate) + ".png"));
+        FileUtils.copyFile(scrFile, new File(currentDir + "/screenshots/" + testName + "TestClass" + "_" + sdf.format(resultdate) + ".png"));
     }
 
     //This method is used to get cell values using Apache POI Api library
-    public String SelectDataFromExcel(String fieldName) throws IOException {
+    public String SelectDataFromExcel(String fieldName, int rownum) throws IOException {
         String cellValue = null;
         FileInputStream file = new FileInputStream(System.getProperty("user.dir") + path);
         XSSFWorkbook wb = new XSSFWorkbook(file);
@@ -52,7 +54,9 @@ public class TestUtil extends TestBase {
                 switch (cell.getCellType()) {
                     case STRING:
                         if (fieldName != null && fieldName.equalsIgnoreCase(cell.getStringCellValue())) {
-                            cellValue = ws.getRow(1).getCell(i).getStringCellValue();
+                            Cell cellValueType = ws.getRow(rownum).getCell(i);
+                            DataFormatter formatter = new DataFormatter();
+                            cellValue = formatter.formatCellValue(cellValueType);
                             break;
                         }
                         break;
@@ -65,34 +69,34 @@ public class TestUtil extends TestBase {
     }
 
     //This method is used to insert cell values using Fillo (Excel API for Java)
-    public void UpdateDataInExcel(String columnName, String field) throws FilloException {
+    public void UpdateDataInExcel(String columnName, String field,String value) throws FilloException {
         Fillo fillo = new Fillo();
         Connection connection = fillo.getConnection(System.getProperty("user.dir") + "/src/main/resources/TestData/TestData.xlsx");
-        String strQuery = "Update UserDetails Set " + columnName + "='" + field + "'";
+        String strQuery = "Update UserDetails Set " + columnName + "='" + field + "' where "+columnName+"='"+value+"'";
+        System.out.println(strQuery);
         connection.executeUpdate(strQuery);
         connection.close();
     }
 
-    public void CreateTestData() throws FilloException {
-        Faker faker = new Faker();
-        String firstName = faker.name().firstName();
-        String lastName = faker.name().lastName();
-        String randomNumber = faker.number().digits(5);
-
-        HashMap<String, String> testData = new HashMap<>();
-
-        testData.put("firstName", firstName);
-        testData.put("lastName", lastName);
-        testData.put("userName", firstName + lastName + randomNumber);
-        testData.put("password", faker.internet().password());
-        testData.put("email", faker.internet().emailAddress());
-        testData.put("mobileNumber", faker.phoneNumber().cellPhone());
-
-        for (String key : testData.keySet()) {
-            String value = testData.get(key);
-            UpdateDataInExcel(key, value);
-        }
-
-    }
+//    public void CreateTestData() throws FilloException {
+//        Faker faker = new Faker();
+//        String firstName = faker.name().firstName();
+//        String lastName = faker.name().lastName();
+//        String randomNumber = faker.number().digits(10);
+//
+//        HashMap<String, String> testData = new HashMap<>();
+//
+////        testData.put("firstName", firstName);
+////        testData.put("lastName", lastName);
+//        testData.put("UserName", randomNumber);
+//
+//        for (int i = 0; i < testData.keySet().size(); i++) {
+//            String key = String.valueOf(testData.keySet());
+//            String result = key.replaceAll("\\[|\\]", "");
+//            String value = testData.get(result);
+//            UpdateDataInExcel(result, value);
+//        }
+//
+//    }
 
 }

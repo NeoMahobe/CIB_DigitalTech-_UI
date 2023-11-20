@@ -54,7 +54,7 @@ public class Page {
     public void ClickRadioButton(WebElement element) {
         Wait <WebDriver> wait = new FluentWait(driver)
                 .withTimeout(Duration.ofSeconds(timeout))
-                .pollingEvery(Duration.ofSeconds(1))
+                .pollingEvery(Duration.ofSeconds(polling))
                 .ignoring(WebDriverException.class);
 
         wait.until(
@@ -77,13 +77,13 @@ public class Page {
                 });
     }
 
-    public void ExcelSendKeys(WebElement element, String text) throws IOException {
+    public void ExcelSendKeys(WebElement element, String text, int value) throws IOException {
         TestUtil testUtil = new TestUtil();
-        String value = testUtil.SelectDataFromExcel(text);
-        SendKeys(element, value);
+        String cellvalue = testUtil.SelectDataFromExcel(text,value);
+        SendKeys(element, cellvalue);
     }
 
-    public void SelectByIndex(WebElement element, int index)  {
+    public void SelectByText(WebElement element, String text)  {
 
         Wait <WebDriver> wait = new FluentWait(driver)
                 .withTimeout(Duration.ofSeconds(timeout))
@@ -93,7 +93,7 @@ public class Page {
         wait.until(
                 d -> {
                     Select dropdown = new Select(element);
-                    dropdown.selectByIndex(index);
+                    dropdown.selectByVisibleText(text);
                     return true;
                 });
     }
