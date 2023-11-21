@@ -35,7 +35,7 @@ public class WebTablesPage extends Page {
     WebElement closeButton;
 
     private String userRole;
-    private String userName;
+    private String value;
     private String customerRadioButton;
     private String randomUserName;
     private String stringValue;
@@ -61,17 +61,31 @@ public class WebTablesPage extends Page {
         stringValue = String.valueOf(selection);
         Faker faker = new Faker();
         TestUtil testUtil = new TestUtil();
-        this.randomUserName = faker.number().digits(10);
+
+       this.randomUserName = faker.number().digits(10);
+//        this.userRole = testUtil.SelectDataFromExcel("Role", selection);
+//        this.customerRadioButton = testUtil.SelectDataFromExcel("Customer", selection);
+        testUtil.UpdateDataInExcel("UserName", randomUserName, stringValue, "ID");
+        this.value = testUtil.SelectDataFromExcel("UserName", selection);
+
+//        WebElement roleId = this.getDriver().findElement(By.xpath("//select[@name = 'RoleId']//option[text() ='" + userRole + "']"));
+//        WebElement customerOption = this.getDriver().findElement(By.xpath("//label[text() = '" + customerRadioButton + "']"));
+
+        CaptureUserDetails(selection);
+        GetAndClickElements(selection);
+//        this.ClickRadioButton(customerOption);
+//        this.Click(roleId);
+        return this;
+    }
+
+    public void GetAndClickElements(int selection) throws IOException {
+        TestUtil testUtil = new TestUtil();
         this.userRole = testUtil.SelectDataFromExcel("Role", selection);
         this.customerRadioButton = testUtil.SelectDataFromExcel("Customer", selection);
-        testUtil.UpdateDataInExcel("UserName", randomUserName, stringValue, "ID");
-        this.userName = testUtil.SelectDataFromExcel("UserName", selection);
-
         WebElement roleId = this.getDriver().findElement(By.xpath("//select[@name = 'RoleId']//option[text() ='" + userRole + "']"));
         WebElement customerOption = this.getDriver().findElement(By.xpath("//label[text() = '" + customerRadioButton + "']"));
-
-        CaptureUserDetails(selection, roleId, customerOption);
-        return this;
+        this.ClickRadioButton(customerOption);
+        this.Click(roleId);
     }
 
     public WebTablesPage CaptureMultipleUserDetails(int count) throws Exception {
@@ -83,15 +97,17 @@ public class WebTablesPage extends Page {
         return this;
     }
 
-    public void CaptureUserDetails(int selection, WebElement roleId, WebElement customerOption) throws IOException {
+    public WebTablesPage CaptureUserDetails(int selection) throws IOException {
         this.ExcelSendKeys(firstNameInputBox, "FirstName", selection);
         this.ExcelSendKeys(lastNameInputBox, "LastName", selection);
         this.ExcelSendKeys(userNameInputBox, "UserName", selection);
         this.ExcelSendKeys(passwordInputBox, "Password", selection);
-        this.ClickRadioButton(customerOption);
-        this.Click(roleId);
+        GetAndClickElements(selection);
+//        this.ClickRadioButton(customerOption);
+//        this.Click(roleId);
         this.ExcelSendKeys(emailInputBox, "Email", selection);
         this.ExcelSendKeys(mobilePhoneInputBox, "Cell", selection);
+        return this;
     }
 
     public WebTablesPage ClickSaveButton() throws InterruptedException {
@@ -104,18 +120,23 @@ public class WebTablesPage extends Page {
         return this;
     }
 
-    public void VerifyEntriesInTable(int records) throws IOException {
+    public void VerifyEntriesInTable(int records, String fieldName) throws IOException {
         TestUtil testUtil = new TestUtil();
         WebElement element = null;
 
         for (int i = 1; i <= records; i++) {
-            this.userName = testUtil.SelectDataFromExcel("UserName", i);
+            this.value = testUtil.SelectDataFromExcel(fieldName, i);
             try{
-                 element = getDriver().findElement(By.xpath("//table[@class ='smart-table table table-striped']//td[text()='" + userName + "']/.."));
+                //We need to use unique Username value to check if record exists
+                 element = getDriver().findElement(By.xpath("//table[@class ='smart-table table table-striped']//td[text()='" + value + "']/.."));
+                 if(value != "UserName"){
+                     //Then we search for the missing value not displayed while also using Username value in the same xpath
+                 }
             }catch (WebDriverException  | NullPointerException e){
                 this.IsDisplayed(element);
             }
             this.IsDisplayed(element);
         }
     }
+
 }

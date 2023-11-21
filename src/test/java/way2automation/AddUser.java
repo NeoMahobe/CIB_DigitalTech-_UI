@@ -19,8 +19,26 @@ public class AddUser extends TestBase {
         Initialization(env);
     }
 
+//    @Test
+//    public void AddMultipleUsers() throws Exception {
+//
+//        driver = GetWebDriver();
+//        testUtil = new TestUtil();
+//        webTablesPage = new WebTablesPage(driver);
+//
+//        webTablesPage
+//                .NavigateToWebTables()
+//                .ClickAddUserButton()
+//                .CaptureMultipleUserDetails(2)
+//                .ClickCloseButton()
+//                .VerifyEntriesInTable(2,"UserName");
+//    }
+
+    /*This test is created to verify customer value is displayed as this issues was picked up during testing
+    * The test will fail as the bug is still persisting
+    *  */
     @Test
-    public void AddMultipleUsers() throws Exception {
+    public void CheckCustomerValueIsCaptured() throws Exception {
 
         driver = GetWebDriver();
         testUtil = new TestUtil();
@@ -29,9 +47,9 @@ public class AddUser extends TestBase {
         webTablesPage
                 .NavigateToWebTables()
                 .ClickAddUserButton()
-                .CaptureMultipleUserDetails(2)
-                .ClickCloseButton()
-                .VerifyEntriesInTable(2);
+                .CaptureUserDetails(1)
+                .ClickSaveButton()
+                .VerifyEntriesInTable(1,"Admin");
     }
 
     @AfterMethod
