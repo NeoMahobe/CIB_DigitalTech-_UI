@@ -19,23 +19,23 @@ public class AddUser extends TestBase {
         Initialization(env);
     }
 
-//    @Test
-//    public void AddMultipleUsers() throws Exception {
-//
-//        driver = GetWebDriver();
-//        testUtil = new TestUtil();
-//        webTablesPage = new WebTablesPage(driver);
-//
-//        webTablesPage
-//                .NavigateToWebTables()
-//                .ClickAddUserButton()
-//                .CaptureMultipleUserDetails(2)
-//                .ClickCloseButton()
-//                .VerifyEntriesInTable(2,"UserName");
-//    }
+    @Test
+    public void AddMultipleUsers() throws Exception {
 
-    /*This test is created to verify customer value is displayed as this issues was picked up during testing
-    * The test will fail as the bug is still persisting
+        driver = GetWebDriver();
+        testUtil = new TestUtil();
+        webTablesPage = new WebTablesPage(driver);
+
+        webTablesPage
+                .NavigateToWebTables()
+                .ClickAddUserButton()
+                .CaptureMultipleUserDetails(2)
+                .ClickCloseButton()
+                .VerifyEntriesInTable(2,"UserName");
+    }
+
+    /*This test was created to verify Customer value is displayed after user details are captured - the issue was picked up during testing.
+    * The test will fail as the bug still persists
     *  */
     @Test
     public void CheckCustomerValueIsCaptured() throws Exception {
@@ -49,7 +49,7 @@ public class AddUser extends TestBase {
                 .ClickAddUserButton()
                 .CaptureUserDetails(1)
                 .ClickSaveButton()
-                .VerifyEntriesInTable(1,"Admin");
+                .VerifyEntriesInTable(1,"Customer");
     }
 
     @AfterMethod

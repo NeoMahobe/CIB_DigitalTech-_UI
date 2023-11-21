@@ -77,7 +77,7 @@ public class Page {
                 });
     }
 
-    public void ExcelSendKeys(WebElement element, String text, int value) throws IOException {
+    public void RetrieveAndSendKeys(WebElement element, String text, int value) throws IOException {
         TestUtil testUtil = new TestUtil();
         String cellvalue = testUtil.SelectDataFromExcel(text, value);
         SendKeys(element, cellvalue);
@@ -96,7 +96,7 @@ public class Page {
                         element.isDisplayed();
                         return true;
                     });
-        }catch (NullPointerException e){
+        }catch (NullPointerException |NoSuchElementException e){
             Assert.fail("Element is not displayed as expected!");
         }
     }

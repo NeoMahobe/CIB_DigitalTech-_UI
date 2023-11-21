@@ -5,6 +5,7 @@ import com.codoid.products.exception.FilloException;
 import com.github.javafaker.Faker;
 import com.way2automation.qa.base.TestBase;
 import com.way2automation.qa.utilities.TestUtil;
+import org.hamcrest.core.Is;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 
@@ -39,6 +40,7 @@ public class WebTablesPage extends Page {
     private String customerRadioButton;
     private String randomUserName;
     private String stringValue;
+    private String userName;
 
     //Initializing the Page Object
     public WebTablesPage(WebDriver driver) {
@@ -48,7 +50,11 @@ public class WebTablesPage extends Page {
     public WebTablesPage NavigateToWebTables() {
         this.getDriver().get(TestBase.url);
         String pageTitle = this.getDriver().getTitle();
+        //Assert that you are on the correct page
         assertEquals("Protractor practice website - WebTables", pageTitle);
+        WebElement tableElement = getDriver().findElement(By.xpath("//table[@table-title='Smart Table example']"));
+        //Ensure User List Table is displayed
+        IsDisplayed(tableElement);
         return this;
     }
 
@@ -61,20 +67,14 @@ public class WebTablesPage extends Page {
         stringValue = String.valueOf(selection);
         Faker faker = new Faker();
         TestUtil testUtil = new TestUtil();
-
-       this.randomUserName = faker.number().digits(10);
-//        this.userRole = testUtil.SelectDataFromExcel("Role", selection);
-//        this.customerRadioButton = testUtil.SelectDataFromExcel("Customer", selection);
+        //Create Unique Username everytime
+        this.randomUserName = faker.number().digits(10);
+        //Store unique username in flat file and use later in the test to assert against
         testUtil.UpdateDataInExcel("UserName", randomUserName, stringValue, "ID");
-        this.value = testUtil.SelectDataFromExcel("UserName", selection);
-
-//        WebElement roleId = this.getDriver().findElement(By.xpath("//select[@name = 'RoleId']//option[text() ='" + userRole + "']"));
-//        WebElement customerOption = this.getDriver().findElement(By.xpath("//label[text() = '" + customerRadioButton + "']"));
+        //this.value = testUtil.SelectDataFromExcel("UserName", selection);
 
         CaptureUserDetails(selection);
         GetAndClickElements(selection);
-//        this.ClickRadioButton(customerOption);
-//        this.Click(roleId);
         return this;
     }
 
@@ -88,6 +88,7 @@ public class WebTablesPage extends Page {
         this.Click(roleId);
     }
 
+    //This method enables you to capture multiple users
     public WebTablesPage CaptureMultipleUserDetails(int count) throws Exception {
         for (int i = 1; i <= count; i++) {
             GetUserDetails(i);
@@ -98,15 +99,13 @@ public class WebTablesPage extends Page {
     }
 
     public WebTablesPage CaptureUserDetails(int selection) throws IOException {
-        this.ExcelSendKeys(firstNameInputBox, "FirstName", selection);
-        this.ExcelSendKeys(lastNameInputBox, "LastName", selection);
-        this.ExcelSendKeys(userNameInputBox, "UserName", selection);
-        this.ExcelSendKeys(passwordInputBox, "Password", selection);
+        this.RetrieveAndSendKeys(firstNameInputBox, "FirstName", selection);
+        this.RetrieveAndSendKeys(lastNameInputBox, "LastName", selection);
+        this.RetrieveAndSendKeys(userNameInputBox, "UserName", selection);
+        this.RetrieveAndSendKeys(passwordInputBox, "Password", selection);
         GetAndClickElements(selection);
-//        this.ClickRadioButton(customerOption);
-//        this.Click(roleId);
-        this.ExcelSendKeys(emailInputBox, "Email", selection);
-        this.ExcelSendKeys(mobilePhoneInputBox, "Cell", selection);
+        this.RetrieveAndSendKeys(emailInputBox, "Email", selection);
+        this.RetrieveAndSendKeys(mobilePhoneInputBox, "Cell", selection);
         return this;
     }
 
@@ -120,19 +119,28 @@ public class WebTablesPage extends Page {
         return this;
     }
 
+    //This method will verify a row that contains *unique userName* and validate any value in said row based on the  'fieldname'
     public void VerifyEntriesInTable(int records, String fieldName) throws IOException {
         TestUtil testUtil = new TestUtil();
         WebElement element = null;
+        WebElement elementInclUsername = null;
 
         for (int i = 1; i <= records; i++) {
-            this.value = testUtil.SelectDataFromExcel(fieldName, i);
-            try{
+
+            //This method will ALWAYS rely on using the unique UserName value to verify any data on any specific row
+            this.userName = testUtil.SelectDataFromExcel("UserName", i);
+            try {
                 //We need to use unique Username value to check if record exists
-                 element = getDriver().findElement(By.xpath("//table[@class ='smart-table table table-striped']//td[text()='" + value + "']/.."));
-                 if(value != "UserName"){
-                     //Then we search for the missing value not displayed while also using Username value in the same xpath
-                 }
-            }catch (WebDriverException  | NullPointerException e){
+                element = getDriver().findElement(By.xpath("//table[@class ='smart-table table table-striped']//td[text()='" + userName + "']/.."));
+                if (fieldName != "UserName") {
+                    try {
+                        //Then we search for the missing value not displayed while also using Username value in the same xpath
+                        elementInclUsername = this.getDriver().findElement(By.xpath("//table[@class ='smart-table table table-striped']//td[text()='" + userName + "']/..//td[text()='" + fieldName + "']"));
+                    } catch (NoSuchElementException e) {
+                        this.IsDisplayed(elementInclUsername);
+                    }
+                }
+            } catch (WebDriverException | NullPointerException e) {
                 this.IsDisplayed(element);
             }
             this.IsDisplayed(element);
