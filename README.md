@@ -4,7 +4,7 @@
  # Project Description
   This is a selenium java based automation framework that is configured to run tests in multiple browsers.
   The project follows the Page Object Model design - which is the industry standard.
-  Followed the singleton design pattern for ease of parallel execution using ThreadLocal'
+  Followed the singleton design pattern for ease of parallel execution using ThreadLocal'.
   The framework takes screen shot upon failure and
   generates repots for test execution status
   
@@ -32,7 +32,7 @@
     
 
    
-    Please refer to the link below to clone project:
+Please refer to the link below to clone project:
        
 https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository
    
