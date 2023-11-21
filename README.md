@@ -32,21 +32,36 @@
     
 
    
-       Please refer to the link below to clone project:
+    Please refer to the link below to clone project:
        
-       https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository
+https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository
    
    Step 1:
    
-    •	Open the project using the IDE of choice from the project local directory.
+    •	Open the project using the IDE of choice from the project local directory
     
     •	File>>Open>>CIB_DigitalTech-_UI>>OK
 
    Step 2:
     
-    •  Navigate to src/test/java/way2automation/AddUser.java to run UI test.
-    
-    •  Navigate to src/main/resources/Regression_Prod.xml to run full regression and parrellel exection
+    •  Navigate to src/test/java/way2automation to run UI tests.
+
+![image](https://github.com/NeoMahobe/CIB_DigitalTech-_UI/assets/61291968/e51549db-4972-4416-adf1-af4d8dd25bd5)
+
+    •  Navigate to src/main/resources/Regression_Prod.xml to run full regression
+
+![image](https://github.com/NeoMahobe/CIB_DigitalTech-_UI/assets/61291968/f4b06605-ba4d-4b9a-a861-01d1549beefd)
+
+    •  Navigate to src/main/resources/Regression_Prod.xml to run parrellel exection
+
+![image](https://github.com/NeoMahobe/CIB_DigitalTech-_UI/assets/61291968/9b1471f5-d075-4761-aa72-05b9ffb5014f)
+
+    •  Navigate to test-output/CIB_Digital_Tech.html for test execution report
+  
+![image](https://github.com/NeoMahobe/CIB_DigitalTech-_UI/assets/61291968/4856d02d-4b7f-4dcd-8fed-1c164caa0e89)
+
+
+
     
 
    
