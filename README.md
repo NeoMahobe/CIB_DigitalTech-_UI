@@ -50,7 +50,8 @@ https://docs.github.com/en/repositories/creating-and-managing-repositories/cloni
 
     •  Navigate to src/main/resources/Regression_Prod.xml to run full regression
 
-![image](https://github.com/NeoMahobe/CIB_DigitalTech-_UI/assets/61291968/f4b06605-ba4d-4b9a-a861-01d1549beefd)
+![image](https://github.com/NeoMahobe/CIB_DigitalTech-_UI/assets/61291968/d2967c01-70e3-4b46-9bbd-899b0902c456)
+
 
     •  Navigate to src/main/resources/Regression_Prod.xml to run parrellel exection
 
