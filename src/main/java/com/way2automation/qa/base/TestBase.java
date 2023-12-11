@@ -15,6 +15,7 @@ public class TestBase {
     public Properties prop;
     public static String url = null;
     public static long PAGE_LOAD_TIMEOUT = 60;
+
     public static ThreadLocal<WebDriver> dr = new ThreadLocal<>();
 
     public TestBase() {

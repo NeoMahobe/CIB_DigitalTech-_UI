@@ -24,8 +24,8 @@ import java.util.concurrent.TimeUnit;
 
 public class Page {
     private WebDriver driver;
-    int polling = 1;
-    int timeout = 15;
+    private int polling = 1;
+    private int timeout = 15;
 
     public Page(WebDriver driver) {
         this.driver = driver;
